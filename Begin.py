@@ -1,5 +1,7 @@
 import discord
 import asyncio
+import hero
+import Variable
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -14,10 +16,8 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         if message.content.startswith('$play'):
-            await message.channel.send('```Mhhhh.... Okay thats```')
-
-class discord(Message)
+            await message.channel.send('```Mhhhh.... Okay```')
 
 
 client = MyClient()
-client.run('')
+client.run(Variable.x)

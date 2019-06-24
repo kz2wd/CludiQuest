@@ -6,4 +6,3 @@ class hero:
         self.Health = Health
 
 Knight = hero("Knight", 10, 10, 100)
-

@@ -1,8 +1,8 @@
 class hero:
-    def __init__(self, Name, Attack, Def, Health):
-        self.Name = Name
-        self.Attack = Attack
-        self.Def = Def
-        self.Health = Health
+    def __init__(self, name, attack, defense, health):
+        self.Name = name
+        self.Attack = attack
+        self.Def = defense
+        self.Health = health
 
-Knight = hero("Knight", 10, 10, 100)
+Knight = hero("Knight", 5, 1, 12)

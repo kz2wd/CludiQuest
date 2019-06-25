@@ -1,7 +1,18 @@
+
+# imports
+
+# public library
 import discord
 import asyncio
+
+# personals libraries
 import hero
+import enemies
+import party
+
+# private library (token)
 import Variable
+
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -11,12 +22,10 @@ class MyClient(discord.Client):
         print('------')
 
     async def on_message(self, message):
-        if message.content.startswith('$help'):
-            await message.channel.send('```Nothing here...```')
-
-    async def on_message(self, message):
-        if message.content.startswith('$play'):
-            await message.channel.send('```Mhhhh.... Okay```')
+        if message.author == self.user:
+            return
+        elif message.content.startswith('!!start'):
+            await message.channel.send('!!start')
 
 
 client = MyClient()

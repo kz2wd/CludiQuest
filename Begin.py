@@ -4,7 +4,6 @@
 # public library
 import discord
 import asyncio
-import time
 
 # personals libraries
 import hero
@@ -26,10 +25,10 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         if message.author == self.user:
-            return
+            if message.content == msg.start:
+                await message.add_reaction(emote.start)
         elif message.content == '!!start':
             await message.channel.send(msg.start)
-            await message.add_reaction(emote.start)
 
 
 client = MyClient()

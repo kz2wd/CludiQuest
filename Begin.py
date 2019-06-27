@@ -1,4 +1,3 @@
-
 # imports
 
 # public library
@@ -12,6 +11,7 @@ import msg
 import emote
 import kit_selector
 import player
+import fight
 
 # private library (token)
 import Variable
@@ -72,7 +72,6 @@ class MyClient(discord.Client):
 
                     for i in player_list:  # check if the player is already in
                         if user.id == i:
-
                             print("redundant id")
                             return
 
@@ -80,10 +79,9 @@ class MyClient(discord.Client):
                     print(player_list)
                     print(x - 1)
                     x += 1
-                    if x == 5:  # put 5 instead of 2, but there is just me and the bot :'(
+                    if x == 2:  # put 5 instead of 2, but there is just me and the bot :'(
 
                         if user != self.user:
-
                             print("game starting")
 
                             game = party.Party(chan, player_list)
@@ -93,62 +91,78 @@ class MyClient(discord.Client):
 
                 if user != self.user:
 
-                    for i in player_list:  # just for the tests
+                    for i in range(4):  # just for the tests
                         if type(player_list[i]) != player.Player:
 
                             print(type(player_list[0]))
 
                             player_list = kit_selector.kit_select(reaction, user, player_list)
-                            print(player_list[0].kit.name)
 
                         else:
 
                             print("fight")
                             global enemy_list
+                            print(enemy_list)
                             if enemy_list == [0]:
-
                                 enemy_list = enemy.enemies_generation()
 
-                            else:
+                            global turn_counter
+                            global next_turn
 
-                                global turn_counter
-                                global next_turn
+                            if turn_counter < next_turn:
 
-                                if turn_counter < next_turn:
+                                await chan.send("```" \
+                                                + str(player_list[0].user) + " : "+str(player_list[0].kit.health)+" ❤\n" \
+                                                + str(player_list[1].user) + " : "+str(player_list[1].kit.health)+" ❤\n" \
+                                                + str(player_list[2].user) + " : "+str(player_list[2].kit.health)+" ❤\n" \
+                                                + str(player_list[3].user) + " : "+str(player_list[3].kit.health)+" ❤\n" \
+                                                + "```")  # can't put it in msg.py => player_list = undefined
 
-                                    await chan.send("```" \
-                                                    + str(player_list[0].user) + " : " + str(player_list[0].kit.health) + " ❤\n" \
-                                                    + str(player_list[1].user) + " : " + str(player_list[1].kit.health) + " ❤\n" \
-                                                    + str(player_list[2].user) + " : " + str(player_list[2].kit.health) + " ❤\n" \
-                                                    + str(player_list[3].user) + " : " + str(player_list[3].kit.health) + " ❤\n" \
-                                                    + "```")  # can't put it in msg.py => player_list = undefined
+                                for j in enemy_list:
+                                    await chan.send("```" + str(j.name) + " : " + str(j.health) + " ❤```")
 
-                                    for j in enemy_list:
-                                        await chan.send("```" + str(j.name) + " : " + str(j.health) + " ❤```")
+                                await chan.send(msg.action)
+                                await chan.send(msg.element)
+                                await chan.send(msg.target)
 
-                                        for p in range(len(player_list)):  # len(player_list), not 1
-                                            if user == player_list[p].user:
+                                turn_counter += 1
+                                print("turn counter")
+                                print(turn_counter)
 
-                                                await chan.send(msg.action)
+                            check = 0
+                            for i in range(len(player_list)):  # len(player_list), not 1
+                                if user == player_list[i].user:
 
-                                                for k in range(len(emote.action)):
-                                                    if reaction.emoji == emote.action[k]:
-                                                        player_list[i].turn[0] = k
+                                    for o in range(len(player_list[i].turn)):
+                                        if player_list[i].turn[o] == 0:
 
-                                                await chan.send(msg.element)
-                                                for l in range(len(emote.element)):
-                                                    if reaction.emoji == emote.element[l]:
-                                                        player_list[i].turn[1] = l
+                                            for k in range(len(emote.action)):
+                                                if reaction.emoji == emote.action[k]:
+                                                    player_list[i].turn[0] = k + 1  # between 1 and 4
 
-                                                await chan.send(msg.target)
-                                                for m in range(len(emote.target)):
-                                                    if reaction.emoji == emote.target[m]:
-                                                        player_list[i].turn[2] = m
+                                            for l in range(len(emote.element)):
+                                                if reaction.emoji == emote.element[l]:
+                                                    player_list[i].turn[1] = l + 1
 
-                                                turn_counter += 1
+                                            for m in range(len(emote.target)):
+                                                if reaction.emoji == emote.target[m]:
+                                                    player_list[i].turn[2] = m + 1
 
-                                            else:
-                                                return
+                                            print("player list turn")
+                                            print(player_list[0].turn)
+
+                                        else:
+                                            check += 1
+                                            print("check = {}".format(check))
+
+                            if check == 12:
+                                global player_turn
+                                if player_turn < next_turn:
+                                    player_turn += 1
+
+                                    player_list, enemy_list = fight.players_play(player_list, enemy_list)
+                                    player_list = fight.enemies_play(player_list, enemy_list)
+                                    next_turn += 1
 
 
 x = 0
@@ -158,9 +172,9 @@ enemy_list = [0]
 
 turn_counter = 0
 next_turn = 1
+player_turn = 0
 
 client = MyClient()
 
 client.run(Variable.x)
-
 

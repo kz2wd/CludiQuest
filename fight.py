@@ -14,16 +14,16 @@ def players_play(player_list, enemy_list):
         t = p.turn[2] - 1
 
         if a == 0:
-            if t <= len(enemy_list):
+            if t < len(enemy_list):
                 dmg = round((p.kit.element[e] + p.kit.attack) * enemy_list[t].defense[e] * enemy_list[t].defense[4])
                 enemy_list[t].health -= dmg
 
         elif a == 1:
-            if t <= len(player_list):
+            if t < len(player_list):
                 dmg_redirection.append([i, t])
 
         elif a == 2:
-            if t <= len(player_list):
+            if t < len(player_list):
                 if player_list[t].kit.health > 0:
                     heal = p.kit.magic
                     if heal + player_list[t].kit.health > player_list[t].kit.hp_max:
@@ -31,7 +31,7 @@ def players_play(player_list, enemy_list):
                     player_list[t].kit.health += heal
 
         elif a == 3:
-            if t <= len(enemy_list):
+            if t < len(enemy_list):
                 dmg = round((p.kit.element[e] + p.kit.magic) * enemy_list[t].defense[e] * enemy_list[t].defense[5])
                 enemy_list[t].health -= dmg
 
@@ -46,16 +46,17 @@ def enemies_play(player_list, enemy_list, dmg_redirection):
             vulnerable_player.append(i)
 
     for i in range(len(enemy_list)):
-        not_protected = True
-        e = enemy_list[i]
-        x = random.randint(0, len(player_list) - 1)
-        for i in range(len(dmg_redirection)):
-            if vulnerable_player[x] == dmg_redirection[i][1]:
-                player_list[dmg_redirection[i][0]].kit.health -= e.attack
-                not_protected = False
+        if enemy_list[i].health > 0:
+            not_protected = True
+            e = enemy_list[i]
+            x = random.randint(0, len(vulnerable_player) - 1)
+            for i in range(len(dmg_redirection)):
+                if vulnerable_player[x] == dmg_redirection[i][1]:
+                    player_list[dmg_redirection[i][0]].kit.health -= e.attack
+                    not_protected = False
 
-        if not_protected:
-            player_list[vulnerable_player[x]].kit.health -= e.attack
+            if not_protected:
+                player_list[vulnerable_player[x]].kit.health -= e.attack
 
     return player_list
 

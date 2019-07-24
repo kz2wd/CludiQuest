@@ -140,7 +140,10 @@ class Bot(discord.Client):
 
                     if game_1.state == 3:
                         for i in game_1.players_id:
-                            i.turn = [0, 0, 0]
+                            if i.kit.health > 0:
+                                i.turn = [0, 0, 0]
+                            else:
+                                i.turn = [-1, -1, -1]
 
                         for i in game_1.players_id:
                             await game_1.channel.send("```{} : {} HP ```".format(i.user, i.kit.health))

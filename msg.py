@@ -14,3 +14,7 @@ action = "```Actions```"
 element = "```Elements```"
 
 target = "```Target```"
+
+defeat = "```You lost...```"
+
+victory = "```You succeded !```"

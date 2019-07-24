@@ -44,6 +44,20 @@ class Bot(discord.Client):
                 game_1.state = 1
                 print("state = 1")
                 game_1.channel = message.channel
+            elif 5 > game_1.state > 2:
+                if message.author == game_1.players_id[0].user.id:
+                    game_1.__init__()
+                    await message.channel.send(msg.start)
+                    game_1.state = 1
+                    print("state = 1")
+                    game_1.channel = message.channel
+            elif game_1.state > 5:
+                game_1.__init__()
+                await message.channel.send(msg.start)
+                game_1.state = 1
+                print("state = 1")
+                game_1.channel = message.channel
+
 
     async def on_reaction_add(self, reaction, user):
         if game_1.state == 1:
@@ -86,24 +100,28 @@ class Bot(discord.Client):
 
         elif game_1.state == 3:
             if user != self.user:
-                check = 0
+
                 for i in range(len(game_1.players_id)):
                     if user.id == game_1.players_id[i].user.id:
 
-                        for j in range(len(game_1.players_id[i].turn)):
-                            if game_1.players_id[i].turn[j] == 0:
+                        if game_1.players_id[i].kit.health > 0:
 
-                                for k in range(len(emote.action)):
-                                    if reaction.emoji == emote.action[k]:
-                                        game_1.players_id[i].turn[0] = k + 1
+                            for j in range(len(game_1.players_id[i].turn)):
+                                if game_1.players_id[i].turn[j] == 0:
 
-                                for l in range(len(emote.element)):
-                                    if reaction.emoji == emote.element[l]:
-                                        game_1.players_id[i].turn[1] = l + 1
+                                    for k in range(len(emote.action)):
+                                        if reaction.emoji == emote.action[k]:
+                                            game_1.players_id[i].turn[0] = k + 1
 
-                                for m in range(len(emote.target)):
-                                    if reaction.emoji == emote.target[m]:
-                                        game_1.players_id[i].turn[2] = m + 1
+                                    for l in range(len(emote.element)):
+                                        if reaction.emoji == emote.element[l]:
+                                            game_1.players_id[i].turn[1] = l + 1
+
+                                    for m in range(len(emote.target)):
+                                        if reaction.emoji == emote.target[m]:
+                                            game_1.players_id[i].turn[2] = m + 1
+                        else:
+                            game_1.players_id[i].turn = [-1, -1, -1]
 
                 all_players_played = True
                 for i in range(len(game_1.players_id)):
@@ -117,6 +135,25 @@ class Bot(discord.Client):
                     game_1.players_id, game_1.enemies, dmg_redirection = fight.players_play(game_1.players_id,
                                                                                             game_1.enemies)
                     game_1.players_id = fight.enemies_play(game_1.players_id, game_1.enemies, dmg_redirection)
+
+                    game_1.state = fight.is_there_a_winner(game_1.players_id, game_1.enemies)
+
+                    if game_1.state == 3:
+                        for i in game_1.players_id:
+                            i.turn = [0, 0, 0]
+
+                        for i in game_1.players_id:
+                            await game_1.channel.send("```{} : {} HP ```".format(i.user, i.kit.health))
+                        for i in game_1.enemies:
+                            await game_1.channel.send("```{} : {} HP ```".format(i.name, i.health))
+                        await game_1.channel.send(msg.action)
+                        await game_1.channel.send(msg.element)
+                        await game_1.channel.send(msg.target)
+
+                    elif game_1.state == 813:
+                        await game_1.channel.send(msg.defeat)
+                    elif game_1.state == 814:
+                        await game_1.channel.send(msg.victory)
 
     async def on_reaction_remove(self, reaction, user):
         if game_1.state == 1:

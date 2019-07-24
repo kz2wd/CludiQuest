@@ -14,7 +14,7 @@ import player
 import fight
 
 # private library (token)
-import Variable
+import my_token
 
 
 class MyClient(discord.Client):
@@ -79,7 +79,7 @@ class MyClient(discord.Client):
                     print(player_list)
                     print(x - 1)
                     x += 1
-                    if x == 2:  # put 5 instead of 2, but there is just me and the bot :'(
+                    if x == 5:  # put 5 instead of 2, but there is just me and the bot :'(
 
                         if user != self.user:
                             print("game starting")
@@ -176,5 +176,5 @@ player_turn = 0
 
 client = MyClient()
 
-client.run(Variable.x)
+client.run(my_token.token)
 

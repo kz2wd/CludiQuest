@@ -4,7 +4,9 @@ import random
 
 def players_play(player_list, enemy_list):
 
-    for i in range(4):
+    dmg_redirection = []
+
+    for i in range(len(player_list)):
 
         p = player_list[i]
         a = p.turn[0] - 1
@@ -18,7 +20,7 @@ def players_play(player_list, enemy_list):
 
         if a == 1:
             if t <= len(player_list):
-                print("not implemented")
+                dmg_redirection.append([i, t])
 
         if a == 2:
             if t <= len(player_list):
@@ -32,15 +34,22 @@ def players_play(player_list, enemy_list):
                 dmg = round((p.kit.element[e] + p.kit.magic) * enemy_list[t].defense[e] * enemy_list[t].defense[5])
                 enemy_list[t].health -= dmg
 
-    return player_list, enemy_list
+    return player_list, enemy_list, dmg_redirection
 
 
-def enemies_play(player_list, enemy_list):
+def enemies_play(player_list, enemy_list, dmg_redirection):
 
     for i in range(len(enemy_list)):
+        not_protected = True
         e = enemy_list[i]
-        x = random.randint(0, 4)
-        player_list[x].health -= e.attack
+        x = random.randint(0, len(player_list))
+        for i in range(len(dmg_redirection)):
+            if x == dmg_redirection[i][1]:
+                player_list[dmg_redirection[i][0]].health -= e.attack
+                not_protected = False
+
+        if not_protected:
+            player_list[x].health -= e.attack
 
     return player_list
 

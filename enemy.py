@@ -12,5 +12,7 @@ class Enemy:
 def enemies_generation():  # very simplified
     enemy_list = []
     for i in range(2):
-        enemy_list.append(Enemy("Zrog", 3, 0, 30, [1, 1, 1, 1, 1, 1], 1, 30))
+        enemy_list.append(Enemy("Zrog", 2, 0, 20, [1, 1, 1, 1, 1, 1], 1, 25))
     return enemy_list
+
+

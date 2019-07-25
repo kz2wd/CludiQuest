@@ -7,3 +7,5 @@ class Hero:
         self.defense = defense  # list of resistances [water, fire, air, earth, physical, magical]
         self.element = element  # list of affinities [water, fire, air, earth]
         self.hp_max = hp_max  # number max of hp
+        self.up_point = 0  # number of point for upgrades of attack / hp / elements
+

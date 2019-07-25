@@ -37,6 +37,16 @@ class Bot(discord.Client):
                 for i in emote.target:
                     await message.add_reaction(i)
 
+            elif message.content == msg.victory:
+                await message.add_reaction(emote.go_forward)
+
+            elif message.content == msg.upgrade:
+                for i in emote.upgrade:
+                    await message.add_reaction(i)
+
+            elif message.content == msg.next_fight:
+                await message.add_reaction(emote.go_forward)
+
         elif message.content == '!!start':
             if game_1.state == 0:
                 await message.channel.send(msg.start)
@@ -86,12 +96,13 @@ class Bot(discord.Client):
                     game_1.state = 3
                     print("state = 3")
 
-                    game_1.enemies = enemy.enemies_generation()
+                    game_1.enemies = enemy.enemies_generation(game_1.fight_round)
 
                     for i in game_1.players_id:
                         await game_1.channel.send("```{} : {} HP ```".format(i.user, i.kit.health))
                     for i in game_1.enemies:
-                        await game_1.channel.send("```{} : {} HP ```".format(i.name, i.health))
+                        await game_1.channel.send("```{} : {} HP | resistance {}```".format(i.name, i.health,
+                                                                                            i.defense))
                     await game_1.channel.send(msg.action)
                     await game_1.channel.send(msg.element)
                     await game_1.channel.send(msg.target)
@@ -120,6 +131,7 @@ class Bot(discord.Client):
                                             game_1.players_id[i].turn[2] = m + 1
                         else:
                             game_1.players_id[i].turn = [-1, -1, -1]
+                            print("player is dead")
 
                 all_players_played = True
                 for i in range(len(game_1.players_id)):
@@ -155,6 +167,73 @@ class Bot(discord.Client):
                         await game_1.channel.send(msg.defeat)
                     elif game_1.state == 814:
                         await game_1.channel.send(msg.victory)
+                        for i in range(len(game_1.players_id)):
+                            game_1.players_id[i].kit.health = game_1.players_id[i].kit.hp_max
+                            game_1.players_id[i].kit.up_point = 3
+                            game_1.players_id[i].turn = [0, 0, 0]
+
+        elif game_1.state == 814:
+            if user != self.user:
+
+                for i in range(len(game_1.players_id)):
+                    if user.id == game_1.players_id[i].user.id:
+                        await game_1.channel.send(msg.upgrade)
+                        game_1.state = 5
+
+        elif game_1.state == 5:
+            if user != self.user:
+                for i in range(len(game_1.players_id)):
+                    if user.id == game_1.players_id[i].user.id:
+                        if game_1.players_id[i].kit.up_point > 0:
+
+                            for j in range(4):  # choose between all 4 elements
+                                if reaction.emoji == emote.element[j]:
+                                    game_1.players_id[i].kit.element[j] += 1
+                                    game_1.players_id[i].kit.up_point -= 1
+                                    print("element up")
+
+                            if reaction.emoji == emote.upgrade[4]:  # choose between pd / md / health
+                                game_1.players_id[i].kit.attack += 1
+                                game_1.players_id[i].kit.up_point -= 1
+                                print("dmg up")
+                            elif reaction.emoji == emote.upgrade[6]:
+                                game_1.players_id[i].kit.magic += 1
+                                game_1.players_id[i].kit.up_point -= 1
+                                print("magic up")
+                            elif reaction.emoji == emote.upgrade[5]:
+                                game_1.players_id[i].kit.hp_max += 3
+                                game_1.players_id[i].kit.health += 3
+                                game_1.players_id[i].kit.up_point -= 1
+                                print("life up")
+
+                    print("checking")
+                    all_players_selected2 = True
+                    for j in range(len(game_1.players_id)):
+                        print(game_1.players_id[i].kit.up_point)
+                        if game_1.players_id[i].kit.up_point > 0:
+                            all_players_selected2 = False
+                            print("all player didn't selected")
+                    if all_players_selected2:
+                        await game_1.channel.send(msg.next_fight)
+                        game_1.state = 6
+                        print("state = 6")
+                        print(game_1.fight_round)
+                        game_1.fight_round += 1
+                        game_1.enemies = enemy.enemies_generation(game_1.fight_round)
+
+        elif game_1.state == 6:
+            if user != self.user:
+                for i in range(len(game_1.players_id)):
+                    if user.id == game_1.players_id[i].user.id:
+                        for i in game_1.players_id:
+                            await game_1.channel.send("```{} : {} HP ```".format(i.user, i.kit.health))
+                        for i in game_1.enemies:
+                            await game_1.channel.send("```{} : {} HP ```".format(i.name, i.health))
+                        await game_1.channel.send(msg.action)
+                        await game_1.channel.send(msg.element)
+                        await game_1.channel.send(msg.target)
+                        game_1.state = 3
+
 
     async def on_reaction_remove(self, reaction, user):
         if game_1.state == 1:

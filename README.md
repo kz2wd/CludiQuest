@@ -2,8 +2,18 @@
 
 A Discord bot
 
-My first one, try not to look for too long at the code, it may cause brain damage.
+You and a maximum of 3 friends will go fight enemies.
 
-The goal was to make like a little dungeon game were you and 3 friends have to fight enemies.
+You have to react to message to choose your kit between a knight,
+a paladin, a mage or an archer, each have differents uses.
 
-I had to speed up to finish it, but if you read that, it should be working.
+You can choose between 4 actions, 4 elements and up to 4 targets
+
+There are interactions between elements when you attack an ennemy or heal an ally,
+it can increase or decrease the efficiency of your action.
+
+Enemies have differents health, damage and resistances.
+
+At the end of each fight you can improve your kit.
+
+There are 5 levels for now.

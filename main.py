@@ -4,7 +4,6 @@ import emote
 import msg
 import player
 import kit_selector
-import party
 import fight
 import enemy
 import game
@@ -57,7 +56,6 @@ class Bot(discord.Client):
                 game_1.state = 1
                 print("state = 1")
                 game_1.channel = message.channel
-
 
     async def on_reaction_add(self, reaction, user):
         if game_1.state == 1:

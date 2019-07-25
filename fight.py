@@ -26,9 +26,10 @@ def players_play(player_list, enemy_list):
             if t < len(player_list):
                 if player_list[t].kit.health > 0:
                     heal = p.kit.magic
-                    if heal + player_list[t].kit.health > player_list[t].kit.hp_max:
-                        heal = heal + player_list[t].kit.health - player_list[t].kit.hp_max
-                    player_list[t].kit.health += heal
+                    if player_list[t].kit.health < player_list[t].kit.hp_max:
+                        if heal + player_list[t].kit.health > player_list[t].kit.hp_max:
+                            heal = heal + player_list[t].kit.health - player_list[t].kit.hp_max
+                        player_list[t].kit.health += heal
 
         elif a == 3:
             if t < len(enemy_list):

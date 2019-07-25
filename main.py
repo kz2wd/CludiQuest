@@ -101,8 +101,10 @@ class Bot(discord.Client):
                     for i in game_1.players_id:
                         await game_1.channel.send("```{} : {} HP ```".format(i.user, i.kit.health))
                     for i in game_1.enemies:
-                        await game_1.channel.send("```{} : {} HP | resistance {}```".format(i.name, i.health,
-                                                                                            i.defense))
+                        await game_1.channel.send("```{} : {} HP | resistance {} | damage {}```".format(i.name,
+                                                                                                        i.health,
+                                                                                                        i.defense,
+                                                                                                        i.attack))
                     await game_1.channel.send(msg.action)
                     await game_1.channel.send(msg.element)
                     await game_1.channel.send(msg.target)
@@ -164,7 +166,8 @@ class Bot(discord.Client):
                         await game_1.channel.send(msg.target)
 
                     elif game_1.state == 813:
-                        await game_1.channel.send(msg.defeat)
+                        await game_1.channel.send(msg.defeat +
+                                                  "``` You survived for {} fight(s)```".format(game_1.fight_round))
                     elif game_1.state == 814:
                         await game_1.channel.send(msg.victory)
                         for i in range(len(game_1.players_id)):

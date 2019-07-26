@@ -19,13 +19,13 @@ def enemies_generation(fight_round):  # very simplified
     elif fight_round == 1:
 
         enemy_list.append(Enemy("Gridon", 4, 0, 17, [1, 1, 1, 1, 1, 1.4], 1, 17))
-        enemy_list.append(Enemy("Balud", 1, 0, 58, [1, 1, 1, 1, 0.6, 1.2], 1, 58))
+        enemy_list.append(Enemy("Baloud", 1, 0, 58, [1, 1, 1, 1, 0.6, 1.2], 1, 58))
         enemy_list.append(Enemy("Zrog", 2, 0, 20, [1, 1, 1, 1, 1, 1], 1, 25))
 
     elif fight_round == 2:
 
         enemy_list.append(Enemy("Krepto", 8, 0, 65, [1, 1, 1, 1, 1.4, 1], 1, 65))
-        enemy_list.append(Enemy("Balud", 1, 0, 58, [1, 1, 1, 1, 0.6, 1.2], 1, 58))
+        enemy_list.append(Enemy("Baloud", 1, 0, 58, [1, 1, 1, 1, 0.6, 1.2], 1, 58))
 
     elif fight_round == 3:
 
@@ -44,7 +44,7 @@ def enemies_generation(fight_round):  # very simplified
             enemy_list.append(Enemy("Lost Soul", 5, 0, 8, [0.5, 0.5, 0.5, 0.5, 0.1, 1], 1, 8))
 
     else:
-        enemy_list.append(Enemy("Game's ender", 20, 0, 9999, [5, 5, 5, 5, 5, 5], 1, 9999))
+        enemy_list.append(Enemy("Govinator", 20, 0, 9999, [5, 5, 5, 5, 5, 5], 1, 9999))
 
     return enemy_list
 

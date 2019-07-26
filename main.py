@@ -101,17 +101,17 @@ class Bot(discord.Client):
                     for i in game_1.players_id:
                         if i.kit.health > 0:
                             await game_1.channel.send(
-                                "```{} : {} HP | pd {} | md {} | elements {}```".format(
-                                    i.user, i.kit.health, i.kit.attack, i.kit.magic, i.kit.element))
+                                "```{} : {}/{} HP | pd {} | md {} | elements {}```".format(
+                                    i.user, i.kit.health, i.kit.hp_max, i.kit.attack, i.kit.magic, i.kit.element))
                         else:
                             await game_1.channel.send("```{} : On the verge of death```".format(i.user))
                     for i in game_1.enemies:
                         if i.health > 0:
                             await game_1.channel.send(
-                                "```{} : {} HP | resistance {} | damage {}```".format(
-                                    i.name, i.health, i.defense, i.attack))
+                                "```{} : {}/{} HP | resistance {} | damage {}```".format(
+                                    i.name, i.health, i.hp_max, i.defense, i.attack))
                         else:
-                            await game_1.channel.send("```{} : Dead".format(i.name))
+                            await game_1.channel.send("```{} : Dead```".format(i.name))
 
                     await game_1.channel.send(msg.action)
                     await game_1.channel.send(msg.element)
@@ -168,17 +168,17 @@ class Bot(discord.Client):
                         for i in game_1.players_id:
                             if i.kit.health > 0:
                                 await game_1.channel.send(
-                                    "```{} : {} HP | pd {} | md {} | elements {}```".format(
-                                        i.user, i.kit.health, i.kit.attack, i.kit.magic, i.kit.element))
+                                    "```{} : {}/{} HP | pd {} | md {} | elements {}```".format(
+                                        i.user, i.kit.health, i.kit.hp_max, i.kit.attack, i.kit.magic, i.kit.element))
                             else:
                                 await game_1.channel.send("```{} : On the verge of death```".format(i.user))
                         for i in game_1.enemies:
                             if i.health > 0:
                                 await game_1.channel.send(
-                                    "```{} : {} HP | resistance {} | damage {}```".format(
-                                        i.name, i.health, i.defense, i.attack))
+                                    "```{} : {}/{} HP | resistance {} | damage {}```".format(
+                                        i.name, i.health, i.hp_max, i.defense, i.attack))
                             else:
-                                await game_1.channel.send("```{} : Dead".format(i.name))
+                                await game_1.channel.send("```{} : Dead```".format(i.name))
 
                         await game_1.channel.send(msg.action)
                         await game_1.channel.send(msg.element)
@@ -186,12 +186,14 @@ class Bot(discord.Client):
 
                     elif game_1.state == 813:
                         await game_1.channel.send(msg.defeat +
-                                                  "``` You survived for {} fight(s)```".format(game_1.fight_round))
+                                                  "```You survived for {} fight(s)```".format(game_1.fight_round))
                     elif game_1.state == 814:
                         await game_1.channel.send(msg.victory)
                         for i in range(len(game_1.players_id)):
                             game_1.players_id[i].kit.health = game_1.players_id[i].kit.hp_max
+
                             game_1.players_id[i].kit.up_point = 3
+
                             game_1.players_id[i].turn = [0, 0, 0]
 
         elif game_1.state == 814:
@@ -251,17 +253,17 @@ class Bot(discord.Client):
                         for j in game_1.players_id:
                             if j.kit.health > 0:
                                 await game_1.channel.send(
-                                    "```{} : {} HP | pd {} | md {} | elements {}```".format(
-                                        j.user, j.kit.health, j.kit.attack, j.kit.magic, j.kit.element))
+                                    "```{} : {}/{} HP | pd {} | md {} | elements {}```".format(
+                                        j.user, j.kit.health, j.kit.hp_max, j.kit.attack, j.kit.magic, j.kit.element))
                             else:
                                 await game_1.channel.send("```{} : On the verge of death```".format(j.user))
                         for j in game_1.enemies:
                             if j.health > 0:
                                 await game_1.channel.send(
-                                    "```{} : {} HP | resistance {} | damage {}```".format(
-                                        j.name, j.health, j.defense, j.attack))
+                                    "```{} : {}/{} HP | resistance {} | damage {}```".format(
+                                        j.name, j.health, j.hp_max, j.defense, j.attack))
                             else:
-                                await game_1.channel.send("```{} : Dead".format(j.name))
+                                await game_1.channel.send("```{} : Dead```".format(j.name))
                         await game_1.channel.send(msg.action)
                         await game_1.channel.send(msg.element)
                         await game_1.channel.send(msg.target)

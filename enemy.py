@@ -39,6 +39,13 @@ def enemies_generation(fight_round):  # very simplified
     elif fight_round == 5:
         enemy_list.append(Enemy("Guardian", 15, 0, 100, [1, 0.5, 3, 2, 1.5, 0.8], 1, 100))
 
+    elif fight_round == 6:
+        for i in range(4):
+            enemy_list.append(Enemy("Lost Soul", 5, 0, 8, [0.5, 0.5, 0.5, 0.5, 0.1, 1], 1, 8))
+
+    else:
+        enemy_list.append(Enemy("Game's ender", 20, 0, 9999, [5, 5, 5, 5, 5, 5], 1, 9999))
+
     return enemy_list
 
 

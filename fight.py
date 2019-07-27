@@ -112,7 +112,7 @@ def players_play(player_list, enemy_list):
                                 heal = round((p.kit.magic + p.kit.element[e]) * bonus_element[j][2])
                                 if player_list[t].kit.health < player_list[t].kit.hp_max:
                                     if heal + player_list[t].kit.health > player_list[t].kit.hp_max:
-                                        heal = heal + player_list[t].kit.health - player_list[t].kit.hp_max
+                                        heal = player_list[t].kit.hp_max - player_list[t].kit.health
                                     player_list[t].kit.health += heal
                 else:
                     print("same heal")
@@ -120,7 +120,7 @@ def players_play(player_list, enemy_list):
                         heal = p.kit.magic + p.kit.element[e]
                         if player_list[t].kit.health < player_list[t].kit.hp_max:
                             if heal + player_list[t].kit.health > player_list[t].kit.hp_max:
-                                heal = heal + player_list[t].kit.health - player_list[t].kit.hp_max
+                                heal = player_list[t].kit.hp_max - player_list[t].kit.health
                             player_list[t].kit.health += heal
 
         elif a == 3:  # magical attack => decrease enemy hp

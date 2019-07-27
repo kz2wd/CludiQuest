@@ -14,6 +14,7 @@ import my_token
 class Bot(discord.Client):
     async def on_ready(self):
         print("{}, {}, is ready".format(self.user.name, self.user.id))
+        await client.change_presence(activity=discord.Game(name='Building Dungeons'))
 
     async def on_message(self, message):
         if message.author == self.user:
@@ -228,6 +229,9 @@ class Bot(discord.Client):
                                 game_1.players_id[i].kit.hp_max += 3
                                 game_1.players_id[i].kit.health += 3
                                 game_1.players_id[i].kit.up_point -= 1
+                                if game_1.players_id[i].kit.name == "Paladin":
+                                    game_1.players_id[i].kit.hp_max += 2
+                                    game_1.players_id[i].kit.health += 2
                                 print("life up")
 
                         print("checking")
@@ -268,6 +272,7 @@ class Bot(discord.Client):
                         await game_1.channel.send(msg.element)
                         await game_1.channel.send(msg.target)
                         game_1.state = 3
+                        print("state = 3")
 
     async def on_reaction_remove(self, reaction, user):
         if game_1.state == 1:

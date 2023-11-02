@@ -1,3 +1,5 @@
+from typing import Any
+
 import discord
 
 import emote
@@ -12,6 +14,13 @@ import my_token
 
 
 class Bot(discord.Client):
+    def __init__(self, **options: Any):
+        intents = discord.Intents.default()
+        intents.message_content = True
+        intents.members = True
+        intents.presences = True
+        super().__init__(intents=intents, **options)
+
     async def on_ready(self):
         print("{}, {}, is ready".format(self.user.name, self.user.id))
         await client.change_presence(activity=discord.Game(name='Building Dungeons'))
@@ -193,7 +202,7 @@ class Bot(discord.Client):
                         for i in range(len(game_1.players_id)):
                             game_1.players_id[i].kit.health = game_1.players_id[i].kit.hp_max
 
-                            game_1.players_id[i].kit.up_point = 3
+                            game_1.players_id[i].kit.up_point = enemy.reward_points(game_1.fight_round)
 
                             game_1.players_id[i].turn = [0, 0, 0]
 
@@ -215,15 +224,21 @@ class Bot(discord.Client):
                                 if reaction.emoji == emote.element[j]:
                                     game_1.players_id[i].kit.element[j] += 1
                                     game_1.players_id[i].kit.up_point -= 1
+                                    if game_1.players_id[i].kit.name == "Wizard":
+                                        game_1.players_id[i].kit.element[j] += 1
                                     print("element up")
 
                             if reaction.emoji == emote.upgrade[4]:  # choose between pd / md / health
                                 game_1.players_id[i].kit.attack += 1
                                 game_1.players_id[i].kit.up_point -= 1
+                                if game_1.players_id[i].kit.name == "Archer":
+                                    game_1.players_id[i].kit.attack += 1
                                 print("dmg up")
                             elif reaction.emoji == emote.upgrade[6]:
                                 game_1.players_id[i].kit.magic += 1
                                 game_1.players_id[i].kit.up_point -= 1
+
+
                                 print("magic up")
                             elif reaction.emoji == emote.upgrade[5]:
                                 game_1.players_id[i].kit.hp_max += 3

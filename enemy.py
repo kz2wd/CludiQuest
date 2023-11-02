@@ -9,6 +9,25 @@ class Enemy:
         self.hp_max = hp_max
 
 
+def reward_points(fight_round):
+    match fight_round:
+        case 0:
+            return 3
+        case 1:
+            return 3
+        case 2:
+            return 2
+        case 3:
+            return 2
+        case 4:
+            return 1
+        case 5:
+            return 5
+        case 6:
+            return 3
+    return 5
+
+
 def enemies_generation(fight_round):  # very simplified
     enemy_list = []
 
